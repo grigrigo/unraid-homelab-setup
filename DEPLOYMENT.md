@@ -1,65 +1,65 @@
-# Unraid NAS Deployment Checklist
+# Unraid NAS 배포 체크리스트
 
-## Pre-Deployment (Week 0)
+## 사전 준비 (0주차)
 
-### Hardware Preparation
-- [ ] Verify all hardware components
-- [ ] Update motherboard BIOS to latest version
-- [ ] Test RAM with memtest86+
-- [ ] Check all HDDs with manufacturer tools
-- [ ] Prepare USB boot drive (4-32GB, not SanDisk)
+### 하드웨어 준비
+- [ ] 모든 하드웨어 구성품 확인
+- [ ] 메인보드 BIOS를 최신 버전으로 업데이트
+- [ ] memtest86+로 RAM 테스트
+- [ ] 제조사 도구로 모든 HDD 검사
+- [ ] USB 부팅 드라이브 준비 (4-32GB, SanDisk 제외)
 
-### Planning
-- [ ] Document network topology
-- [ ] Plan IP addressing scheme
-- [ ] Decide on storage configuration (single/dual parity)
-- [ ] Choose domain name (if applicable)
-- [ ] Plan backup strategy
+### 계획 수립
+- [ ] 네트워크 토폴로지 문서화
+- [ ] IP 주소 체계 계획
+- [ ] 스토리지 구성 결정 (싱글/듀얼 패리티)
+- [ ] 도메인 이름 선택 (해당하는 경우)
+- [ ] 백업 전략 계획
 
-## Phase 1: Base Installation (Day 1)
+## 1단계: 기본 설치 (1일차)
 
-### Unraid Installation
-- [ ] Create Unraid USB boot drive
-- [ ] Configure BIOS settings (AHCI, VT-d, etc.)
-- [ ] Boot from USB and access WebUI
-- [ ] Set timezone and basic settings
-- [ ] Activate trial license (30 days)
+### Unraid 설치
+- [ ] Unraid USB 부팅 드라이브 생성
+- [ ] BIOS 설정 구성 (AHCI, VT-d 등)
+- [ ] USB로 부팅하고 WebUI 접속
+- [ ] 시간대 및 기본 설정
+- [ ] 트라이얼 라이선스 활성화 (30일)
 
-### Storage Configuration
-- [ ] Assign disks (parity, data, cache)
-- [ ] Choose filesystem (XFS for array, BTRFS for cache)
-- [ ] Start array and format disks
-- [ ] Begin parity sync (6-24 hours)
-- [ ] Create basic shares
+### 스토리지 구성
+- [ ] 디스크 할당 (패리티, 데이터, 캐시)
+- [ ] 파일시스템 선택 (어레이용 XFS, 캐시용 BTRFS)
+- [ ] 어레이 시작 및 디스크 포맷
+- [ ] 패리티 동기화 시작 (6-24시간)
+- [ ] 기본 공유 폴더 생성
 
-**Script to run:**
+**실행할 스크립트:**
 ```bash
 /mnt/user/scripts/setup/initial_setup.sh
 ```
 
-## Phase 2: Security (Day 2)
+## 2단계: 보안 설정 (2일차)
 
-### Access Control
-- [ ] Set strong root password
-- [ ] Create user accounts
-- [ ] Configure share permissions
-- [ ] Enable SSH with key authentication
+### 접근 제어
+- [ ] 강력한 root 비밀번호 설정
+- [ ] 사용자 계정 생성
+- [ ] 공유 권한 구성
+- [ ] 키 인증으로 SSH 활성화
 
-### Network Security
-- [ ] Configure firewall rules
-- [ ] Set up SSL certificate
-- [ ] Enable 2FA authentication
-- [ ] Configure VPN access (Tailscale/WireGuard)
+### 네트워크 보안
+- [ ] 방화벽 규칙 구성
+- [ ] SSL 인증서 설정
+- [ ] 2단계 인증(2FA) 활성화
+- [ ] VPN 접근 구성 (Tailscale/WireGuard)
 
-**Reference:** `docs/03_security_setup.md`
+**참조:** `docs/03_security_setup.md`
 
-## Phase 3: Docker Services (Days 3-4)
+## 3단계: Docker 서비스 (3-4일차)
 
-### Core Services
-- [ ] Install Community Applications plugin
-- [ ] Deploy media stack (Plex/Jellyfin)
-- [ ] Deploy backup stack (Duplicati)
-- [ ] Deploy monitoring stack (Prometheus/Grafana)
+### 핵심 서비스
+- [ ] Community Applications 플러그인 설치
+- [ ] 미디어 스택 배포 (Plex/Jellyfin)
+- [ ] 백업 스택 배포 (Duplicati)
+- [ ] 모니터링 스택 배포 (Prometheus/Grafana)
 
 **Docker Compose:**
 ```bash
@@ -67,171 +67,171 @@ cd /mnt/user/docker/media-stack
 docker-compose up -d
 ```
 
-### GPU Configuration (if applicable)
-- [ ] Install Nvidia drivers plugin
-- [ ] Configure GPU passthrough
-- [ ] Enable hardware transcoding
-- [ ] Apply 2-stream patch (GTX 1050)
+### GPU 구성 (해당하는 경우)
+- [ ] Nvidia 드라이버 플러그인 설치
+- [ ] GPU 패스스루 구성
+- [ ] 하드웨어 트랜스코딩 활성화
+- [ ] 2-stream 패치 적용 (GTX 1050)
 
-## Phase 4: Backup Implementation (Day 5)
+## 4단계: 백업 구현 (5일차)
 
-### Local Backup
-- [ ] Connect external USB drive
-- [ ] Install Unassigned Devices plugin
-- [ ] Configure USB backup script
-- [ ] Test backup and restore
+### 로컬 백업
+- [ ] 외장 USB 드라이브 연결
+- [ ] Unassigned Devices 플러그인 설치
+- [ ] USB 백업 스크립트 구성
+- [ ] 백업 및 복원 테스트
 
-### Cloud Backup
-- [ ] Create Backblaze B2 account
-- [ ] Configure Duplicati/Rclone
-- [ ] Set up backup schedules
-- [ ] Test cloud restore
+### 클라우드 백업
+- [ ] Backblaze B2 계정 생성
+- [ ] Duplicati/Rclone 구성
+- [ ] 백업 스케줄 설정
+- [ ] 클라우드 복원 테스트
 
-**Scripts:**
+**스크립트:**
 - `/mnt/user/scripts/backup/usb_backup.sh`
 - `/mnt/user/scripts/backup/cloud_backup.sh`
 
-## Phase 5: Monitoring (Day 6)
+## 5단계: 모니터링 (6일차)
 
-### Metrics Collection
-- [ ] Deploy Prometheus
-- [ ] Configure node exporters
-- [ ] Set up Grafana dashboards
-- [ ] Configure alert rules
+### 메트릭 수집
+- [ ] Prometheus 배포
+- [ ] 노드 익스포터 구성
+- [ ] Grafana 대시보드 설정
+- [ ] 알림 규칙 구성
 
-### Alerting
-- [ ] Set up notification channels (email/Discord)
-- [ ] Configure alert thresholds
-- [ ] Test alert delivery
-- [ ] Document escalation procedures
+### 알림 설정
+- [ ] 알림 채널 설정 (이메일/Discord)
+- [ ] 알림 임계값 구성
+- [ ] 알림 전달 테스트
+- [ ] 에스컬레이션 절차 문서화
 
-**Reference:** `monitoring/prometheus/alerts.yml`
+**참조:** `monitoring/prometheus/alerts.yml`
 
-## Phase 6: Automation (Day 7)
+## 6단계: 자동화 (7일차)
 
-### Scheduled Tasks
-- [ ] Configure parity checks (monthly)
-- [ ] Set up backup schedules
-- [ ] Configure Docker updates (Watchtower)
-- [ ] Set up log rotation
+### 예약 작업
+- [ ] 패리티 체크 구성 (월간)
+- [ ] 백업 스케줄 설정
+- [ ] Docker 업데이트 구성 (Watchtower)
+- [ ] 로그 로테이션 설정
 
-## Phase 7: Performance Tuning (Week 2)
+## 7단계: 성능 튜닝 (2주차)
 
-### Storage Optimization
-- [ ] Configure cache settings
-- [ ] Set up mover schedule
-- [ ] Enable SSD TRIM
-- [ ] Optimize share split levels
+### 스토리지 최적화
+- [ ] 캐시 설정 구성
+- [ ] Mover 스케줄 설정
+- [ ] SSD TRIM 활성화
+- [ ] 공유 split level 최적화
 
-### Network Optimization
-- [ ] Enable jumbo frames (if supported)
-- [ ] Configure SMB settings
-- [ ] Optimize Docker networks
-- [ ] Test transfer speeds
+### 네트워크 최적화
+- [ ] 점보 프레임 활성화 (지원되는 경우)
+- [ ] SMB 설정 구성
+- [ ] Docker 네트워크 최적화
+- [ ] 전송 속도 테스트
 
-## Phase 8: Testing (Week 2)
+## 8단계: 테스트 (2주차)
 
-### Functionality Tests
-- [ ] Test all Docker containers
-- [ ] Verify media streaming
-- [ ] Test backup/restore procedures
-- [ ] Verify remote access
+### 기능 테스트
+- [ ] 모든 Docker 컨테이너 테스트
+- [ ] 미디어 스트리밍 확인
+- [ ] 백업/복원 절차 테스트
+- [ ] 원격 접속 확인
 
-### Failure Scenarios
-- [ ] Test disk failure simulation
-- [ ] Test power failure recovery
-- [ ] Test backup restoration
-- [ ] Document recovery procedures
+### 장애 시나리오
+- [ ] 디스크 장애 시뮬레이션 테스트
+- [ ] 전원 장애 복구 테스트
+- [ ] 백업 복원 테스트
+- [ ] 복구 절차 문서화
 
-## Phase 9: Documentation (Week 2)
+## 9단계: 문서화 (2주차)
 
-### System Documentation
-- [ ] Document network configuration
-- [ ] Create service inventory
-- [ ] Document backup procedures
-- [ ] Create user guides
+### 시스템 문서화
+- [ ] 네트워크 구성 문서화
+- [ ] 서비스 목록 작성
+- [ ] 백업 절차 문서화
+- [ ] 사용자 가이드 작성
 
-### Credentials Management
-- [ ] Store passwords securely
-- [ ] Document API keys
-- [ ] Create recovery procedures
-- [ ] Set up password manager
+### 자격 증명 관리
+- [ ] 비밀번호 안전하게 저장
+- [ ] API 키 문서화
+- [ ] 복구 절차 작성
+- [ ] 비밀번호 관리자 설정
 
-## Phase 10: Go-Live (Week 3)
+## 10단계: 운영 시작 (3주차)
 
-### Final Checks
-- [ ] Review all security settings
-- [ ] Verify all backups working
-- [ ] Check monitoring alerts
-- [ ] Review resource utilization
+### 최종 점검
+- [ ] 모든 보안 설정 검토
+- [ ] 모든 백업 작동 확인
+- [ ] 모니터링 알림 확인
+- [ ] 리소스 사용률 검토
 
-### Migration
-- [ ] Migrate data from old system
-- [ ] Update DNS records
-- [ ] Configure port forwarding
-- [ ] Notify users of new system
+### 마이그레이션
+- [ ] 이전 시스템에서 데이터 마이그레이션
+- [ ] DNS 레코드 업데이트
+- [ ] 포트 포워딩 구성
+- [ ] 사용자에게 새 시스템 알림
 
-### Post-Deployment
-- [ ] Purchase Unraid license
-- [ ] Schedule maintenance windows
-- [ ] Plan capacity monitoring
-- [ ] Document lessons learned
+### 배포 후
+- [ ] Unraid 라이선스 구매
+- [ ] 유지보수 일정 계획
+- [ ] 용량 모니터링 계획
+- [ ] 교훈 문서화
 
-## Maintenance Schedule
+## 유지보수 일정
 
-### Daily
-- [ ] Check dashboard for errors
-- [ ] Review system notifications
+### 일일
+- [ ] 대시보드에서 오류 확인
+- [ ] 시스템 알림 검토
 
-### Weekly
-- [ ] Check backup completion
-- [ ] Review disk usage
-- [ ] Check for updates
+### 주간
+- [ ] 백업 완료 확인
+- [ ] 디스크 사용량 검토
+- [ ] 업데이트 확인
 
-### Monthly
-- [ ] Run parity check
-- [ ] Test backup restore
-- [ ] Review security logs
-- [ ] Update documentation
+### 월간
+- [ ] 패리티 체크 실행
+- [ ] 백업 복원 테스트
+- [ ] 보안 로그 검토
+- [ ] 문서 업데이트
 
-### Quarterly
-- [ ] Review and update Docker containers
-- [ ] Audit user access
-- [ ] Test disaster recovery
+### 분기별
+- [ ] Docker 컨테이너 검토 및 업데이트
+- [ ] 사용자 접근 감사
+- [ ] 재해 복구 테스트
 
-## Rollback Plan
+## 롤백 계획
 
-If issues occur:
+문제 발생 시:
 
-1. **Minor Issues:**
-   - Restore from BTRFS snapshots
-   - Rollback Docker containers
-   - Restore configuration from backup
+1. **경미한 문제:**
+   - BTRFS 스냅샷에서 복원
+   - Docker 컨테이너 롤백
+   - 백업에서 구성 복원
 
-2. **Major Issues:**
-   - Boot from backup USB
-   - Restore array configuration
-   - Rebuild from cloud backups
+2. **주요 문제:**
+   - 백업 USB로 부팅
+   - 어레이 구성 복원
+   - 클라우드 백업에서 재구축
 
-3. **Complete Failure:**
-   - Fresh Unraid installation
-   - Import configuration backup
-   - Restore data from cloud
+3. **완전한 실패:**
+   - Unraid 신규 설치
+   - 구성 백업 가져오기
+   - 클라우드에서 데이터 복원
 
-## Support Resources
+## 지원 리소스
 
-- **Unraid Forums:** https://forums.unraid.net
+- **Unraid 포럼:** https://forums.unraid.net
 - **Reddit:** r/unraid
 - **Discord:** Unraid Community
-- **Documentation:** This repository
+- **문서:** 이 리포지토리
 
-## Sign-off
+## 승인
 
-- [ ] System Administrator: ___________
-- [ ] Backup Verified: ___________
-- [ ] Security Reviewed: ___________
-- [ ] Documentation Complete: ___________
-- [ ] Go-Live Approved: ___________
+- [ ] 시스템 관리자: ___________
+- [ ] 백업 확인: ___________
+- [ ] 보안 검토: ___________
+- [ ] 문서화 완료: ___________
+- [ ] 운영 승인: ___________
 
-**Deployment Date:** ___________
-**Completed By:** ___________
+**배포 날짜:** ___________
+**완료자:** ___________

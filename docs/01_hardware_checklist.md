@@ -10,13 +10,13 @@
 - [ ] GPU: GTX 1050 2GB
 
 ## BIOS 설정 체크리스트
-- [ ] SATA Mode: AHCI 설정
-- [ ] Intel VT-d: Enabled
-- [ ] IOMMU: Enabled
-- [ ] C-States: Enabled
-- [ ] Boot Priority: USB First
-- [ ] Restore on AC Power Loss: Power On
-- [ ] Wake-on-LAN: Enabled
+- [ ] SATA 모드: AHCI 설정
+- [ ] Intel VT-d: 활성화
+- [ ] IOMMU: 활성화
+- [ ] C-States: 활성화
+- [ ] 부팅 우선순위: USB 첫번째
+- [ ] AC 전원 복구: 전원 켜기
+- [ ] Wake-on-LAN: 활성화
 
 ## 구매 필요 항목
 - [ ] USB 드라이브 (4-32GB, SanDisk 제외)
