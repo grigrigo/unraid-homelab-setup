@@ -1,0 +1,87 @@
+# Prometheus Configuration for Unraid NAS
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    monitor: 'unraid-nas'
+    environment: 'homelab'
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - alertmanager:9093
+
+# Load rules once and periodically evaluate them
+rule_files:
+  - "alerts.yml"
+
+# Scrape configurations
+scrape_configs:
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Node Exporter - Host metrics
+  - job_name: 'node'
+    static_configs:
+      - targets: ['node-exporter:9100']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'unraid-host'
+
+  # Docker containers monitoring
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']
+
+  # Unraid metrics (via telegraf or custom exporter)
+  - job_name: 'unraid'
+    static_configs:
+      - targets: ['unraid-exporter:9101']
+    metrics_path: /metrics
+
+  # SMART metrics from Scrutiny
+  - job_name: 'smart'
+    static_configs:
+      - targets: ['scrutiny:8080']
+    metrics_path: /metrics
+
+  # Docker containers
+  - job_name: 'containers'
+    static_configs:
+      - targets:
+        - 'plex:32400'
+        - 'sonarr:8989'
+        - 'radarr:7878'
+        - 'qbittorrent:8080'
+
+  # Network devices (if applicable)
+  - job_name: 'snmp'
+    static_configs:
+      - targets:
+        - '192.168.1.1'  # Router
+    metrics_path: /snmp
+    params:
+      module: [if_mib]
+
+  # Blackbox exporter for endpoint monitoring
+  - job_name: 'blackbox'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+        - http://unraid.local
+        - http://plex.local:32400
+        - http://nextcloud.local
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115

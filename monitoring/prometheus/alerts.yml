@@ -1,0 +1,142 @@
+# Alert Rules for Unraid NAS Monitoring
+groups:
+  - name: unraid_alerts
+    interval: 30s
+    rules:
+      # Disk Space Alerts
+      - alert: DiskSpaceLow
+        expr: (node_filesystem_avail_bytes{mountpoint=~"/mnt/.*"} / node_filesystem_size_bytes{mountpoint=~"/mnt/.*"}) * 100 < 10
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Low disk space on {{ $labels.mountpoint }}"
+          description: "Disk {{ $labels.mountpoint }} has less than 10% free space ({{ $value | humanize }}% remaining)"
+
+      - alert: DiskSpaceCritical
+        expr: (node_filesystem_avail_bytes{mountpoint=~"/mnt/.*"} / node_filesystem_size_bytes{mountpoint=~"/mnt/.*"}) * 100 < 5
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Critical disk space on {{ $labels.mountpoint }}"
+          description: "Disk {{ $labels.mountpoint }} has less than 5% free space ({{ $value | humanize }}% remaining)"
+
+      # Array Health
+      - alert: ArrayDegraded
+        expr: unraid_array_status != 1
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Unraid array is degraded"
+          description: "The Unraid array is not in a healthy state"
+
+      # Disk Temperature
+      - alert: DiskTemperatureHigh
+        expr: smartmon_temperature_celsius > 50
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High disk temperature on {{ $labels.disk }}"
+          description: "Disk {{ $labels.disk }} temperature is {{ $value }}°C (threshold: 50°C)"
+
+      - alert: DiskTemperatureCritical
+        expr: smartmon_temperature_celsius > 60
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Critical disk temperature on {{ $labels.disk }}"
+          description: "Disk {{ $labels.disk }} temperature is {{ $value }}°C (threshold: 60°C)"
+
+      # SMART Health
+      - alert: DiskSMARTFailure
+        expr: smartmon_device_smart_healthy != 1
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "SMART failure predicted for {{ $labels.disk }}"
+          description: "Disk {{ $labels.disk }} is reporting SMART errors - immediate replacement recommended"
+
+      # CPU Usage
+      - alert: CPUUsageHigh
+        expr: 100 - (avg(rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage"
+          description: "CPU usage has been above 80% for 10 minutes (current: {{ $value | humanize }}%)"
+
+      # Memory Usage
+      - alert: MemoryUsageHigh
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 90
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage"
+          description: "Memory usage is above 90% (current: {{ $value | humanize }}%)"
+
+      # Docker Container Health
+      - alert: ContainerDown
+        expr: up{job="containers"} == 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Container {{ $labels.instance }} is down"
+          description: "Docker container {{ $labels.instance }} has been down for 5 minutes"
+
+      # Backup Status
+      - alert: BackupFailed
+        expr: backup_last_success_timestamp < (time() - 86400)
+        for: 1h
+        labels:
+          severity: warning
+        annotations:
+          summary: "Backup not completed in 24 hours"
+          description: "Last successful backup was {{ $value | humanizeDuration }} ago"
+
+      # Network Issues
+      - alert: NetworkInterfaceDown
+        expr: node_network_up{device!~"lo|docker.*|veth.*"} == 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Network interface {{ $labels.device }} is down"
+          description: "Network interface {{ $labels.device }} has been down for 5 minutes"
+
+      # Parity Check
+      - alert: ParityCheckOverdue
+        expr: (time() - unraid_parity_check_last_timestamp) > (30 * 86400)
+        for: 1h
+        labels:
+          severity: warning
+        annotations:
+          summary: "Parity check overdue"
+          description: "Last parity check was {{ $value | humanizeDuration }} ago (recommended: monthly)"
+
+      # UPS Battery (if configured)
+      - alert: UPSBatteryLow
+        expr: ups_battery_charge < 20
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "UPS battery low"
+          description: "UPS battery charge is {{ $value }}% - shutdown may be imminent"
+
+      # Service Response Time
+      - alert: ServiceResponseSlow
+        expr: probe_duration_seconds > 5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Service {{ $labels.instance }} responding slowly"
+          description: "Service {{ $labels.instance }} took {{ $value }}s to respond (threshold: 5s)"

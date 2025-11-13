@@ -1,0 +1,88 @@
+version: '3.8'
+
+# Backup Stack for Unraid NAS
+# Includes: Duplicati, Restic, Rclone
+
+services:
+  # Duplicati - GUI-based backup solution
+  duplicati:
+    image: lscr.io/linuxserver/duplicati:latest
+    container_name: duplicati
+    environment:
+      - PUID=99
+      - PGID=100
+      - TZ=Asia/Seoul
+    volumes:
+      - /mnt/nvme/appdata/duplicati:/config
+      - /mnt/user:/source:ro  # Read-only access to source
+      - /mnt/user/Backups:/backups
+    ports:
+      - 8200:8200
+    restart: unless-stopped
+
+  # Restic REST Server - For restic backups
+  restic-rest:
+    image: restic/rest-server:latest
+    container_name: restic-rest
+    environment:
+      - OPTIONS=--no-auth  # Add authentication in production
+      - DATA_DIRECTORY=/data
+    volumes:
+      - /mnt/user/Backups/restic:/data
+    ports:
+      - 8000:8000
+    restart: unless-stopped
+
+  # Rclone Web GUI
+  rclone:
+    image: rclone/rclone:latest
+    container_name: rclone-gui
+    command: rcd --rc-web-gui --rc-addr :5572 --rc-user admin --rc-pass ${RCLONE_PASSWORD}
+    environment:
+      - PUID=99
+      - PGID=100
+    volumes:
+      - /mnt/nvme/appdata/rclone:/config/rclone
+      - /mnt/user:/data:ro
+      - /mnt/user/Backups/rclone:/backups
+    ports:
+      - 5572:5572
+    restart: unless-stopped
+
+  # Kopia - Modern backup with deduplication
+  kopia:
+    image: kopia/kopia:latest
+    container_name: kopia
+    hostname: kopia
+    environment:
+      - KOPIA_PASSWORD=${KOPIA_PASSWORD}
+      - TZ=Asia/Seoul
+      - USER=admin
+    volumes:
+      - /mnt/nvme/appdata/kopia:/app/config
+      - /mnt/nvme/appdata/kopia/cache:/app/cache
+      - /mnt/nvme/appdata/kopia/logs:/app/logs
+      - /mnt/user:/data:ro  # Source data (read-only)
+      - /mnt/user/Backups/kopia:/repository  # Backup repository
+    ports:
+      - 51515:51515
+    command: server start --insecure --address=0.0.0.0:51515 --server-username=admin --server-password=${KOPIA_PASSWORD}
+    restart: unless-stopped
+
+  # Backup validation service
+  backup-validator:
+    image: alpine:latest
+    container_name: backup-validator
+    environment:
+      - TZ=Asia/Seoul
+    volumes:
+      - /mnt/user/Backups:/backups:ro
+      - /mnt/user/scripts/backup:/scripts:ro
+      - /mnt/user/logs:/logs
+    command: /bin/sh -c "crond -f"
+    restart: unless-stopped
+
+networks:
+  default:
+    name: backup-net
+    driver: bridge

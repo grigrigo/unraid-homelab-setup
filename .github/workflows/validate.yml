@@ -1,0 +1,79 @@
+name: Validate Scripts and Configs
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate-shell-scripts:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install shellcheck
+      run: sudo apt-get install -y shellcheck
+
+    - name: Run shellcheck on all shell scripts
+      run: |
+        find . -type f -name "*.sh" -exec shellcheck {} \;
+
+    - name: Check script permissions
+      run: |
+        for script in $(find scripts -type f -name "*.sh"); do
+          if [[ ! -x "$script" ]]; then
+            echo "Script $script is not executable"
+            exit 1
+          fi
+        done
+
+  validate-docker-compose:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Validate Docker Compose files
+      run: |
+        for compose_file in $(find docker -name "docker-compose.yml"); do
+          docker-compose -f "$compose_file" config > /dev/null
+        done
+
+  validate-yaml:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Install yamllint
+      run: pip install yamllint
+
+    - name: Lint YAML files
+      run: yamllint . || true
+
+  security-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Run Trivy security scan
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+
+    - name: Upload Trivy results to GitHub Security
+      uses: github/codeql-action/upload-sarif@v2
+      if: always()
+      with:
+        sarif_file: 'trivy-results.sarif'

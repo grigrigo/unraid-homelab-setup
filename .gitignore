@@ -1,0 +1,104 @@
+# Unraid NAS Setup - Git Ignore File
+
+# System Files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Sensitive Information
+*.key
+*.pem
+*.crt
+*.env
+.env.*
+secrets/
+credentials/
+private/
+
+# Backup Files
+*.bak
+*.backup
+*.old
+*.orig
+*.tmp
+
+# Log Files
+*.log
+logs/
+*.err
+*.out
+
+# Database Files
+*.db
+*.sqlite
+*.sqlite3
+
+# Docker Files (sensitive)
+docker-compose.override.yml
+.env.docker
+
+# Configuration Files with Credentials
+**/config/*_secret.yml
+**/config/*_private.yml
+**/config/*.key
+wireguard/*.conf
+tailscale/*.json
+
+# Temporary Files
+temp/
+tmp/
+cache/
+
+# Media Files (large)
+*.mkv
+*.mp4
+*.avi
+*.iso
+*.img
+
+# Backup Archives
+*.tar.gz
+*.zip
+*.7z
+*.rar
+
+# VM Images
+*.qcow2
+*.vmdk
+*.vdi
+
+# Personal Data
+personal/
+photos/
+documents/
+
+# Test Files
+test/
+tests/
+*.test
+
+# Node modules (if using any web interfaces)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.Python
+
+# Terraform (if used for infrastructure)
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# Ansible (if used for automation)
+*.retry
+ansible/inventory/production
+ansible/group_vars/all/vault.yml
