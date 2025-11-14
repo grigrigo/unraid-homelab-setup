@@ -4,26 +4,26 @@
 개인용 NAS 서버를 Unraid OS를 이용해 구축하는 프로젝트입니다. 엔터프라이즈급 기능을 가정에서 구현하며, 데이터 안정성과 확장성을 모두 갖춘 시스템을 목표로 합니다.
 
 ## 시스템 사양
-- **CPU**: Intel 저전력 CPU (Celeron/Pentium/i3)
-- **RAM**: 64GB DDR4
-- **메인보드**: ASRock (M.2 슬롯 포함)
+- **CPU**: Intel Core i3-14100T (4코어/8스레드, TDP 35W)
+- **RAM**: 64GB DDR5-5600 (Team Group 32GB × 2)
+- **메인보드**: ASRock B760M Pro-A (LGA1700, M.2 슬롯 2개)
 - **스토리지**:
-  - 3TB HDD × 4개 (Array)
-  - 500GB SATA SSD (Cache)
-  - 1TB NVMe SSD (고성능 풀, 옵션)
-- **GPU**: GTX 1050 2GB (하드웨어 트랜스코딩)
-- **전력 소비**: 45-80W
+  - TOSHIBA DT01ACA300 3TB × 3개 (Array)
+  - SanDisk 500GB SATA SSD (앱/캐시)
+  - XPG GAMMIX S11 Pro 1TB NVMe (고속 캐시)
+- **GPU**: Intel UHD Graphics 730 (Quick Sync 지원)
+- **전력 소비**: 35-65W (실측 기준)
 
 ## 주요 기능
-### 스토리지
-- 싱글 패리티: 9TB 가용 공간
-- 듀얼 패리티: 6TB 가용 공간 (선택)
-- 1개(또는 2개) 디스크 실패 시 데이터 보호
+### 스토리지 옵션
+- 패리티 보호: 6TB 가용 공간 (1개 디스크 실패 보호)
+- 패리티 없음: 9TB 가용 공간 (보호 없음)
+- 추후 HDD 추가 시 패리티 구성 가능
 
 ### 미디어 서버
 - Plex/Jellyfin 미디어 스트리밍
-- 하드웨어 트랜스코딩 (5-8개 동시 스트림)
-- 4K 콘텐츠 지원
+- Intel Quick Sync 하드웨어 트랜스코딩 (4-6개 1080p 동시 스트림)
+- 4K 콘텐츠 지원 (다이렉트 플레이)
 
 ### 데이터 보호
 - 3-2-1 백업 전략 구현
@@ -37,15 +37,25 @@
 - VPN 접속 (Tailscale/WireGuard)
 - 방화벽 및 침입 탐지
 
-## 문서 구조
+## 📚 문서 구조
 ```
 docs/
-├── 01_hardware_checklist.md    # 하드웨어 체크리스트
-├── 02_installation_guide.md    # 설치 가이드
-├── 03_security_setup.md        # 보안 설정
-├── 04_docker_apps.md          # Docker 앱 설치
-├── 05_backup_strategy.md      # 백업 전략
-└── Unraid_NAS_Complete_Guide_2025_4HDD.md  # 전체 가이드
+├── 00-getting-started/          # 시작 가이드
+│   ├── prerequisites.md        # 사전 요구사항
+│   └── hardware-requirements.md # 하드웨어 사양
+├── 01-planning/                 # 계획 단계
+│   ├── hardware-checklist.md   # 하드웨어 체크리스트
+│   └── hardware-testing.md     # 하드웨어 테스트
+├── 02-setup-guides/             # 설치 가이드
+│   ├── 01-bios-configuration.md # BIOS 설정
+│   ├── 03-initial-installation.md # 초기 설치
+│   ├── 04-array-configuration.md  # 어레이 구성
+│   └── 07-security-hardening.md   # 보안 강화
+├── 03-application-guides/       # 애플리케이션
+├── 04-operations/               # 운영 가이드
+├── 05-troubleshooting/          # 문제 해결
+├── 06-disaster-recovery/        # 재해 복구
+└── 07-reference/               # 참조 문서
 ```
 
 ## 구축 일정

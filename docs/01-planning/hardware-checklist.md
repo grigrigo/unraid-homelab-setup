@@ -1,27 +1,28 @@
 # Unraid NAS 하드웨어 체크리스트
 
 ## 현재 보유 하드웨어 확인
-- [ ] CPU 모델 확인: _______________
-- [ ] 메인보드 모델 확인: _______________
-- [ ] RAM 용량 확인: 64GB
-- [ ] HDD 확인: 3TB × 4개
-- [ ] SSD 확인: 500GB SATA
-- [ ] NVMe 슬롯 확인: M.2 슬롯 있음
-- [ ] GPU: GTX 1050 2GB
+- [x] CPU 모델 확인: Intel Core i3-14100T (4코어/8스레드, 35W TDP)
+- [x] 메인보드 모델 확인: ASRock B760M Pro-A 7.03 (LGA1700)
+- [x] RAM 용량 확인: 64GB (Team Group DDR5-5600 32GB × 2)
+- [x] HDD 확인: TOSHIBA DT01ACA300 3TB × 3개
+- [x] SSD 확인: SanDisk 500GB SATA
+- [x] NVMe 확인: XPG GAMMIX S11 Pro 1TB (M.2 2280)
+- [ ] GPU: 내장 그래픽 (Intel UHD Graphics 730)
 
-## BIOS 설정 체크리스트
-- [ ] SATA 모드: AHCI 설정
-- [ ] Intel VT-d: 활성화
-- [ ] IOMMU: 활성화
-- [ ] C-States: 활성화
-- [ ] 부팅 우선순위: USB 첫번째
-- [ ] AC 전원 복구: 전원 켜기
-- [ ] Wake-on-LAN: 활성화
+## BIOS 설정 체크리스트 (ASRock B760M Pro-A)
+- [ ] SATA 모드: AHCI 설정 (Advanced → Storage Configuration)
+- [ ] Intel VT-d: 활성화 (Advanced → CPU Configuration)
+- [ ] Intel VT-x: 활성화 (가상화 지원)
+- [ ] C-States: 활성화 (저전력 35W TDP 활용)
+- [ ] 부팅 우선순위: USB 첫번째 (Boot → Boot Priority)
+- [ ] AC 전원 복구: 전원 켜기 (Advanced → ACPI Configuration)
+- [ ] Wake-on-LAN: 활성화 (선택사항)
 
 ## 구매 필요 항목
-- [ ] USB 드라이브 (4-32GB, SanDisk 제외)
-- [ ] 외장 HDD 12TB (백업용, 선택사항)
-- [ ] NVMe SSD 1TB (고성능 풀용, 선택사항)
+- [ ] USB 드라이브 (4-32GB, SanDisk 제외 권장)
+- [ ] 외장 HDD 9-12TB (백업용, 선택사항)
+- [ ] SATA 케이블 추가 (필요시)
+- [ ] 케이스 팬 (냉각 개선용, 선택사항)
 
 ## 네트워크 환경
 - [ ] 기가비트 이더넷 확인
@@ -30,5 +31,6 @@
 
 ## 전원 관리
 - [ ] UPS 보유 여부: _______________
-- [ ] 예상 전력 소비: 45-80W
+- [ ] 예상 전력 소비: 35-65W (i3-14100T TDP 35W + 디스크)
 - [ ] 24시간 운영 가능 환경 확인
+- [ ] 월 예상 전기료: 약 8,000-12,000원 (24/7 운영 시)

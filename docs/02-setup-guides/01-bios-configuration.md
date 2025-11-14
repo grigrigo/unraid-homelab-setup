@@ -12,7 +12,7 @@ Unraid 최적 성능을 위한 BIOS/UEFI 설정 상세 가이드
 | ASUS | Del, F2 | UEFI BIOS |
 | MSI | Del | Click BIOS |
 | Gigabyte | Del, F2 | UEFI DualBIOS |
-| ASRock | F2, Del | UEFI Setup |
+| **ASRock** | **F2, Del** | **UEFI Setup (B760M Pro-A)** |
 | Intel NUC | F2 | Visual BIOS |
 
 ### BIOS 버전 확인
@@ -372,10 +372,43 @@ Exit Tab
 - Q-Flash Plus: 백업용
 - APP Center: 불필요
 
-### ASRock
-- XFast RAM: Disabled
-- XFast LAN: Disabled
+### ASRock B760M Pro-A (실제 구축 메인보드)
+```
+BIOS 버전: 7.03 이상 권장
+접근: F2 또는 Del 키
+
+주요 설정 위치:
+├─ Advanced Tab
+│   ├─ Storage Configuration
+│   │   ├─ SATA Mode Selection: [AHCI] ← 필수!
+│   │   ├─ Hot Plug: [Enabled]
+│   │   └─ SMART: [Enabled]
+│   ├─ CPU Configuration
+│   │   ├─ Intel Virtualization Technology: [Enabled]
+│   │   ├─ VT-d: [Enabled]
+│   │   ├─ C-States Support: [Enabled]
+│   │   ├─ Intel SpeedStep: [Enabled]
+│   │   └─ Intel Turbo Boost: [Enabled]
+│   └─ ACPI Configuration
+│       └─ Restore on AC/Power Loss: [Power On]
+├─ OC Tweaker (메모리 설정)
+│   ├─ DRAM Configuration
+│   │   ├─ Load XMP Setting: [XMP 3.0 Profile 1]
+│   │   └─ DRAM Frequency: [DDR5-5600]
+├─ Boot Tab
+│   ├─ Boot Mode Select: [UEFI]
+│   ├─ Fast Boot: [Disabled]
+│   ├─ CSM: [Disabled]
+│   └─ Boot Priority: [USB First]
+└─ Security Tab
+    └─ Secure Boot: [Disabled]
+
+특별 참고사항:
+- XFast RAM: Disabled (Unraid와 충돌)
+- XFast LAN: Disabled (불필요)
 - UEFI Tech Service: Disabled
+- Intel Platform Trust: Disabled
+```
 
 ## ✅ 최종 점검
 

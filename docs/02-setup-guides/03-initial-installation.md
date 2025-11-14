@@ -43,13 +43,36 @@
 - [ ] 키보드: Korean
 - [ ] 호스트명: Tower (또는 원하는 이름)
 
-### 3.2 디스크 할당 (싱글 패리티)
+### 3.2 디스크 할당 옵션
+
+#### 옵션 1: 패리티 보호 구성 (권장)
 ```
-패리티: 3TB HDD #1
-디스크 1: 3TB HDD #2
-디스크 2: 3TB HDD #3
-디스크 3: 3TB HDD #4
-캐시: 500GB SSD
+패리티: TOSHIBA 3TB HDD #1
+디스크 1: TOSHIBA 3TB HDD #2
+디스크 2: TOSHIBA 3TB HDD #3
+캐시 1: SanDisk 500GB SSD
+캐시 2: XPG GAMMIX S11 Pro 1TB NVMe
+```
+- 총 용량: 6TB (보호됨)
+- 패리티로 1개 디스크 실패 시 복구 가능
+
+#### 옵션 2: 최대 용량 구성 (패리티 없음)
+```
+디스크 1: TOSHIBA 3TB HDD #1
+디스크 2: TOSHIBA 3TB HDD #2
+디스크 3: TOSHIBA 3TB HDD #3
+캐시 1: SanDisk 500GB SSD
+캐시 2: XPG GAMMIX S11 Pro 1TB NVMe
+```
+- 총 용량: 9TB (보호 없음)
+- ⚠️ 디스크 실패 시 데이터 손실
+
+#### 캐시 풀 구성
+```
+캐시 풀 옵션:
+1. SSD + NVMe BTRFS RAID1 (미러링, 500GB 용량)
+2. SSD + NVMe 개별 사용 (1.5TB 용량)
+3. NVMe만 캐시로 사용 (SSD는 앱 전용)
 ```
 
 ### 3.3 어레이 시작
