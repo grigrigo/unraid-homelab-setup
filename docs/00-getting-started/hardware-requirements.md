@@ -12,6 +12,7 @@ Unraid NAS 구축을 위한 하드웨어 사양 가이드
 | CPU | 64-bit CPU | Intel i3/AMD Ryzen 3 이상 | **Intel Core i3-14100T** |
 | RAM | 4GB | 16GB+ ECC | **64GB DDR5-5600** |
 | 디스크 | 1개 | 3개 이상 (패리티+데이터) | **HDD 3개 + SSD + NVMe** |
+| GPU | 없음 (선택) | iGPU 또는 전용 GPU | **Intel UHD 730 + GTX 1050** |
 | USB | 1GB | 8-32GB USB 2.0/3.0 | 준비 필요 |
 | 네트워크 | 100Mbps | Gigabit Ethernet | **Gigabit (온보드)** |
 
@@ -109,6 +110,35 @@ RPM: 7200
   - 중요 데이터 빠른 접근
 ```
 
+### 그래픽카드: NVIDIA GeForce GTX 1050
+```yaml
+모델: NVIDIA GeForce GTX 1050
+아키텍처: Pascal (GP107)
+CUDA 코어: 640개
+메모리: 2GB GDDR5
+메모리 버스: 128-bit
+TDP: 75W
+인터페이스: PCIe 3.0 x16
+비디오 출력:
+  - DisplayPort 1.4
+  - HDMI 2.0b
+  - DVI-D
+인코더: NVENC (1세대)
+특징:
+  - 하드웨어 비디오 인코딩/디코딩
+  - Plex/Jellyfin 트랜스코딩 가속
+  - 동시 트랜스코딩 제한: 2개 (드라이버 제한)
+  - Nvidia Unlocked Patch로 제한 해제 가능
+용도:
+  - 미디어 서버 하드웨어 트랜스코딩
+  - VM GPU 패스스루 (선택)
+  - Docker 컨테이너 GPU 가속
+주의사항:
+  - 2개 스트림 제한 (GTX 1000 시리즈)
+  - Patch 적용 시 무제한 트랜스코딩 가능
+  - Intel Quick Sync와 병행 사용 권장
+```
+
 ## 💰 비용 분석
 
 ### 하드웨어 비용 (2025년 1월 기준)
@@ -120,19 +150,20 @@ RPM: 7200
 | TOSHIBA 3TB × 3 | 270,000원 | _____원 |
 | SanDisk SSD 500GB | 60,000원 | _____원 |
 | XPG NVMe 1TB | 100,000원 | _____원 |
-| **합계** | **약 1,060,000원** | _____원 |
+| NVIDIA GTX 1050 2GB | 80,000원 | _____원 |
+| **합계** | **약 1,140,000원** | _____원 |
 
 ### 운영 비용
 ```yaml
 전력 소비:
-  - 유휴: 약 35W
-  - 평균: 약 45W
-  - 최대: 약 65W
+  - 유휴: 약 45W (CPU 35W + GPU 10W)
+  - 평균: 약 65W (CPU 45W + GPU 20W)
+  - 최대: 약 110W (CPU 35W + GPU 75W 풀로드)
 
 월간 전기료:
-  - 45W × 24시간 × 30일 = 32.4kWh
-  - 32.4kWh × 300원 = 약 9,720원/월
-  - 연간: 약 116,640원
+  - 65W × 24시간 × 30일 = 46.8kWh
+  - 46.8kWh × 300원 = 약 14,040원/월
+  - 연간: 약 168,480원
 
 Unraid 라이선스:
   - Basic (6 드라이브): $59 (약 75,000원)
@@ -145,13 +176,18 @@ Unraid 라이선스:
 ### 미디어 서버
 ```yaml
 Plex/Jellyfin 트랜스코딩:
-  - Quick Sync 활용: 4-6개 동시 1080p
+  - Intel Quick Sync: 4-6개 동시 1080p
+  - NVIDIA NVENC (GTX 1050): 2개 동시 1080p (제한)
+  - NVIDIA NVENC (Patch 적용): 10-15개 동시 1080p
   - CPU 트랜스코딩: 2-3개 동시 1080p
   - 다이렉트 플레이: 10+ 스트림
+  - 권장: Quick Sync + NVENC 병행 사용
 
 4K 지원:
   - 다이렉트 플레이: 지원
-  - 트랜스코딩: 1-2개 스트림 (Quick Sync)
+  - 트랜스코딩 (Quick Sync): 1-2개 스트림
+  - 트랜스코딩 (NVENC): 1-2개 스트림
+  - H.265/HEVC: 하드웨어 디코딩 지원
 ```
 
 ### Docker 컨테이너
@@ -229,6 +265,7 @@ Advanced Mode (F6)
 - [x] HDD: 3TB × 3
 - [x] SSD: 500GB
 - [x] NVMe: 1TB
+- [x] GPU: NVIDIA GTX 1050 2GB
 
 ### 추가 필요
 - [ ] USB 드라이브 (8-32GB)
@@ -252,6 +289,12 @@ CPU (i3-14100T):
   - 부하: 55-65°C
   - 최대: 70°C (안전)
 
+GPU (GTX 1050):
+  - 유휴: 30-35°C
+  - 트랜스코딩: 50-65°C
+  - 최대: 80°C (안전)
+  - 팬 속도: 자동 조절
+
 HDD:
   - 정상: 30-40°C
   - 주의: 45°C 이상
@@ -264,8 +307,10 @@ SSD/NVMe:
 
 ### 냉각 권장사항
 - CPU: 기본 쿨러로 충분 (35W TDP)
-- 케이스: 전면 흡기 1개, 후면 배기 1개
+- GPU: 팬 포함 모델 권장 (75W TDP)
+- 케이스: 전면 흡기 1-2개, 후면 배기 1개
 - HDD: 직접 공기 흐름 확보
+- PCIe 슬롯: GPU 하단 여유 공간 확보
 
 ## 🚀 다음 단계
 
