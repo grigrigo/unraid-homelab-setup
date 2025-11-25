@@ -7,7 +7,8 @@
 - [x] HDD 확인: TOSHIBA DT01ACA300 3TB × 3개
 - [x] SSD 확인: SanDisk 500GB SATA
 - [x] NVMe 확인: XPG GAMMIX S11 Pro 1TB (M.2 2280)
-- [ ] GPU: 내장 그래픽 (Intel UHD Graphics 730)
+- [x] GPU (내장): Intel UHD Graphics 730 (Quick Sync 지원)
+- [x] GPU (외장): NVIDIA GeForce GTX 1050 2GB (NVENC 지원)
 
 ## BIOS 설정 체크리스트 (ASRock B760M Pro-A)
 - [ ] SATA 모드: AHCI 설정 (Advanced → Storage Configuration)
@@ -31,6 +32,9 @@
 
 ## 전원 관리
 - [ ] UPS 보유 여부: _______________
-- [ ] 예상 전력 소비: 35-65W (i3-14100T TDP 35W + 디스크)
+- [ ] 예상 전력 소비: 45-110W (CPU 35W + GPU 75W + 디스크)
+  - 유휴: 약 45W
+  - 평균: 약 65W
+  - 최대: 약 110W (GPU 풀로드)
 - [ ] 24시간 운영 가능 환경 확인
-- [ ] 월 예상 전기료: 약 8,000-12,000원 (24/7 운영 시)
+- [ ] 월 예상 전기료: 약 14,000원 (65W 평균 24/7 운영 시)
