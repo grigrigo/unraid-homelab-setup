@@ -11,30 +11,30 @@
 - [x] GPU (외장): NVIDIA GeForce GTX 1050 2GB (NVENC 지원)
 
 ## BIOS 설정 체크리스트 (ASRock B760M Pro-A)
-- [ ] SATA 모드: AHCI 설정 (Advanced → Storage Configuration)
-- [ ] Intel VT-d: 활성화 (Advanced → CPU Configuration)
-- [ ] Intel VT-x: 활성화 (가상화 지원)
-- [ ] C-States: 활성화 (저전력 35W TDP 활용)
-- [ ] 부팅 우선순위: USB 첫번째 (Boot → Boot Priority)
-- [ ] AC 전원 복구: 전원 켜기 (Advanced → ACPI Configuration)
-- [ ] Wake-on-LAN: 활성화 (선택사항)
+- [x] SATA 모드: AHCI 설정 (Advanced → Storage Configuration)
+- [x] Intel VT-d: 활성화 (Advanced → CPU Configuration)
+- [x] Intel VT-x: 활성화 (가상화 지원)
+- [x] C-States: 활성화 (저전력 35W TDP 활용)
+- [x] 부팅 우선순위: USB 첫번째 (Boot → Boot Priority)
+- [x] AC 전원 복구: 전원 켜기 (Advanced → ACPI Configuration)
+- [x] Wake-on-LAN: 활성화 (선택사항)
 
 ## 구매 필요 항목
-- [ ] USB 드라이브 (4-32GB, SanDisk 제외 권장)
-- [ ] 외장 HDD 9-12TB (백업용, 선택사항)
-- [ ] SATA 케이블 추가 (필요시)
-- [ ] 케이스 팬 (냉각 개선용, 선택사항)
+- [x] USB 드라이브 (4-32GB, SanDisk 제외 권장)
+- [x] 외장 HDD 9-12TB (백업용, 선택사항)
+- [x] SATA 케이블 추가 (필요시)
+- [x] 케이스 팬 (냉각 개선용, 선택사항)
 
 ## 네트워크 환경
-- [ ] 기가비트 이더넷 확인
-- [ ] 고정 IP 할당 계획: 192.168.___.___
-- [ ] 포트포워딩 필요 포트 확인
+- [x] 기가비트 이더넷 확인
+- [x] 고정 IP 할당 계획: 192.168.0.100
+- [x] 포트포워딩 필요 포트 확인
 
 ## 전원 관리
 - [ ] UPS 보유 여부: _______________
-- [ ] 예상 전력 소비: 45-110W (CPU 35W + GPU 75W + 디스크)
+- [x] 예상 전력 소비: 45-110W (CPU 35W + GPU 75W + 디스크)
   - 유휴: 약 45W
   - 평균: 약 65W
   - 최대: 약 110W (GPU 풀로드)
-- [ ] 24시간 운영 가능 환경 확인
-- [ ] 월 예상 전기료: 약 14,000원 (65W 평균 24/7 운영 시)
+- [x] 24시간 운영 가능 환경 확인
+- [x] 월 예상 전기료: 약 14,000원 (65W 평균 24/7 운영 시)

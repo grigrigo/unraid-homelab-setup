@@ -83,10 +83,10 @@ RPM: 7200
   - 옵션 3: 추후 HDD 추가 시 패리티 구성
 ```
 
-#### SSD: SanDisk 500GB SATA
+#### SSD: Samsung 830 Series 128GB SATA
 ```yaml
-모델: SanDisk SATA SSD
-용량: 500GB
+모델: Samsung 830 Series
+용량: 128GB
 인터페이스: SATA 6Gb/s
 용도: 캐시 드라이브
 기능:
@@ -148,10 +148,10 @@ TDP: 75W
 | ASRock B760M Pro-A | 150,000원 | _____원 |
 | DDR5 32GB × 2 | 300,000원 | _____원 |
 | TOSHIBA 3TB × 3 | 270,000원 | _____원 |
-| SanDisk SSD 500GB | 60,000원 | _____원 |
+| Samsung 830 SSD 128GB | 30,000원 | _____원 |
 | XPG NVMe 1TB | 100,000원 | _____원 |
 | NVIDIA GTX 1050 2GB | 80,000원 | _____원 |
-| **합계** | **약 1,140,000원** | _____원 |
+| **합계** | **약 1,110,000원** | _____원 |
 
 ### 운영 비용
 ```yaml
@@ -263,7 +263,7 @@ Advanced Mode (F6)
 - [x] 메인보드: ASRock B760M Pro-A
 - [x] RAM: 64GB DDR5
 - [x] HDD: 3TB × 3
-- [x] SSD: 500GB
+- [x] SSD: 128GB Samsung 830
 - [x] NVMe: 1TB
 - [x] GPU: NVIDIA GTX 1050 2GB
 
