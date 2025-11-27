@@ -308,9 +308,271 @@ cat /etc/samba/smb.conf
 tail -f /var/log/samba/log.smbd
 ```
 
-## 6. 성능 문제
+## 6. 보안 및 접근 문제
 
-### 6.1 느린 전송 속도
+### 6.1 root 계정 비밀번호 초기화
+
+#### 상황
+- root 비밀번호를 잊어버림
+- 웹 UI 로그인은 되지만 SSH/터미널 접속 불가
+- 긴급 복구 작업 필요
+
+#### 방법 1: 웹 UI에서 초기화 (권장)
+
+웹 UI 접속이 가능한 경우 가장 안전한 방법입니다.
+
+```bash
+# 단계별 절차
+1. Unraid WebUI 접속 (http://tower 또는 http://192.168.0.100)
+2. Settings → Users 선택
+3. "root" 사용자 클릭
+4. "Password" 필드에 새 비밀번호 입력
+5. "Repeat Password"에 동일하게 입력
+6. "Apply" 버튼 클릭
+```
+
+**비밀번호 권장 사항:**
+```yaml
+길이: 최소 12자 이상
+조합:
+  - 대문자
+  - 소문자
+  - 숫자
+  - 특수문자 (!@#$%^&*)
+
+예시: UnRaid2025!@Secure
+```
+
+---
+
+#### 방법 2: 콘솔에서 초기화 (물리적 접근)
+
+웹 UI 접속이 불가능하지만 서버에 물리적으로 접근 가능한 경우입니다.
+
+```bash
+# 1. 서버 콘솔에 모니터/키보드 연결
+# 2. 콘솔 로그인 (엔터 키로 로그인)
+# 3. 비밀번호 변경 명령 실행
+
+passwd root
+
+# 4. 새 비밀번호 입력 (화면에 표시 안 됨)
+New password: [새비밀번호입력]
+
+# 5. 비밀번호 확인
+Retype new password: [새비밀번호입력]
+
+# 6. 성공 메시지
+passwd: password updated successfully
+```
+
+**참고**: Unraid 기본 설정에서는 콘솔 로그인 시 비밀번호 없이 자동 로그인됩니다.
+
+---
+
+#### 방법 3: USB 부팅 드라이브에서 비밀번호 삭제 (고급)
+
+모든 접근이 차단된 경우의 마지막 수단입니다.
+
+**⚠️ 주의**: 이 방법은 물리적 USB 접근이 필요하며, 보안상 중요한 절차입니다.
+
+**필요한 준비물:**
+- Unraid USB 부팅 드라이브
+- 다른 컴퓨터 (Windows/Mac/Linux)
+
+**절차:**
+
+```bash
+1. Unraid 서버 종료
+   - 웹 UI → Tools → Shutdown 또는 전원 버튼
+
+2. USB 부팅 드라이브 제거
+   - 서버 뒷면에서 Unraid USB 드라이브 분리
+
+3. 다른 컴퓨터에 USB 연결
+   - Windows/Mac/Linux PC에 연결
+   - USB 드라이브 인식 확인
+
+4. config 폴더로 이동
+   Windows: E:\config\       (드라이브 문자는 다를 수 있음)
+   Mac:     /Volumes/UNRAID/config/
+   Linux:   /media/usb/config/
+
+5. shadow 및 smbpasswd 파일 삭제
+   - config 폴더에서 "shadow" 파일 찾기 → 삭제
+   - config 폴더에서 "smbpasswd" 파일 찾기 → 삭제
+   - 두 파일 모두 완전 삭제 (휴지통이 아닌 영구 삭제)
+
+6. USB를 안전하게 제거
+   - 정상 제거 절차 수행
+
+7. USB를 Unraid 서버에 다시 연결
+   - 원래 위치에 삽입
+
+8. 서버 부팅
+   - 전원 켜기
+   - 부팅 완료 대기 (약 1-2분)
+```
+
+**결과:**
+- **모든 사용자 계정**의 비밀번호가 초기화됨 (root 및 공유 사용자 모두)
+- 콘솔: 엔터 키만으로 로그인 가능
+- 웹 UI: 비밀번호 없이 접속 가능
+- SSH: 비밀번호 없이 접속 가능 (일시적)
+- SMB/NFS 공유: 인증 없이 접근 가능 (일시적)
+
+---
+
+**⚠️ 보안 경고 - 즉시 비밀번호 설정 필수!**
+
+shadow 및 smbpasswd 파일이 없으면 시스템이 완전히 열려있는 상태입니다. 복구 후 **반드시 즉시** 새 비밀번호를 설정하세요.
+
+**⚠️ 중요**: 이 방법은 root 계정뿐만 아니라 **모든 공유 사용자 계정의 비밀번호도 초기화**합니다. USB 드라이브에 물리적으로 접근할 수 있는 사람은 누구나 전체 관리자 권한을 얻을 수 있으므로 **USB의 물리적 보안이 매우 중요**합니다.
+
+**복구 직후 수행 (필수):**
+
+```bash
+# 방법 A: 웹 UI에서 (권장)
+1. http://[IP주소] 접속
+2. Settings → Users → root
+3. 새 root 비밀번호 입력 및 저장
+4. Settings → Users → [다른 사용자들]
+5. 모든 공유 사용자 계정의 비밀번호도 재설정
+
+# 방법 B: 콘솔 또는 SSH에서
+# 로그인 후 즉시 실행
+passwd root
+# 새 비밀번호 입력
+New password: [입력]
+Retype new password: [재입력]
+
+# 다른 사용자들도 비밀번호 설정
+smbpasswd -a [username]
+
+# 비밀번호 설정 확인
+ls -la /boot/config/shadow
+ls -la /boot/config/smbpasswd
+# 두 파일이 모두 자동 생성되었는지 확인
+```
+
+**설정 검증:**
+```bash
+# SSH 접속 테스트
+ssh root@[IP주소]
+# 비밀번호 입력 요구되면 성공
+
+# 웹 UI 접속 테스트
+# 로그아웃 후 재로그인 시 비밀번호 요구 확인
+```
+
+---
+
+#### 방법 4: 원격 SSH 접속 복구
+
+SSH 키 인증이 설정되어 있는 경우 비밀번호 없이 접속 가능합니다.
+
+```bash
+# 로컬 PC에서 (사전에 SSH 키 등록 필요)
+ssh -i ~/.ssh/unraid_key root@192.168.0.100
+
+# 접속 후 비밀번호 변경
+passwd root
+```
+
+**SSH 키 등록 (사전 준비)**:
+```bash
+# 1. 로컬 PC에서 키 생성
+ssh-keygen -t rsa -b 4096 -f ~/.ssh/unraid_key
+
+# 2. 공개 키를 Unraid에 복사
+# Settings → Users → root → SSH Public Keys
+# ~/.ssh/unraid_key.pub 내용 붙여넣기
+```
+
+---
+
+### 6.2 보안 설정 점검
+
+비밀번호 초기화 후 보안 강화를 위한 추가 조치입니다.
+
+#### SSH 보안 강화
+```bash
+# /boot/config/go 파일에 추가
+
+# SSH 포트 변경 (22 → 2222)
+sed -i 's/#Port 22/Port 2222/' /etc/ssh/sshd_config
+
+# root 비밀번호 로그인 비활성화 (키 인증만 허용)
+sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+
+# SSH 서비스 재시작
+/etc/rc.d/rc.sshd restart
+```
+
+#### 웹 UI 보안
+```markdown
+1. HTTPS 강제
+   - Settings → Identification → Use SSL/TLS: Yes
+   - Let's Encrypt 인증서 설정
+
+2. 2FA (Two-Factor Authentication)
+   - Community Apps → "Unraid 2FA" 플러그인 설치
+
+3. 접근 제한
+   - Settings → Identification
+   - Local TLD: tower (로컬 접근만)
+```
+
+#### 정기 비밀번호 변경
+```bash
+# 3-6개월마다 비밀번호 변경
+passwd root
+
+# 비밀번호 변경 히스토리 확인
+chage -l root
+```
+
+---
+
+### 6.3 계정 잠금 문제
+
+SSH 접속 시도 실패가 반복되어 계정이 잠긴 경우입니다.
+
+#### 증상
+```
+ssh: connect to host 192.168.0.100 port 22: Connection refused
+Permission denied (publickey,password)
+```
+
+#### 잠금 해제
+```bash
+# 콘솔에서 확인
+cat /var/log/secure | grep "Failed password"
+
+# 특정 IP 차단 확인
+iptables -L -n | grep DROP
+
+# Fail2ban 설치된 경우
+fail2ban-client status sshd
+fail2ban-client unban [IP주소]
+```
+
+#### 예방 조치
+```bash
+# Fail2ban 허용 목록 추가
+# /etc/fail2ban/jail.local
+
+[DEFAULT]
+ignoreip = 127.0.0.1/8 192.168.0.0/24
+maxretry = 5
+bantime = 600
+```
+
+---
+
+## 7. 성능 문제
+
+### 7.1 느린 전송 속도
 
 #### 진단 도구
 ```bash
@@ -340,7 +602,7 @@ df -h /mnt/cache
    - Mover 스케줄 조정
 ```
 
-### 6.2 높은 CPU 사용률
+### 7.2 높은 CPU 사용률
 
 #### 프로세스 확인
 ```bash
@@ -363,9 +625,9 @@ docker update --cpus="2.0" [container]
 renice -n 10 -p [PID]
 ```
 
-## 7. 하드웨어 문제
+## 8. 하드웨어 문제
 
-### 7.1 갑작스런 재부팅/종료
+### 8.1 갑작스런 재부팅/종료
 
 #### 로그 분석
 ```bash
@@ -394,9 +656,9 @@ cat /sys/class/thermal/thermal_zone*/temp
    - 슬롯 변경 시도
 ```
 
-## 8. 백업/복구 문제
+## 9. 백업/복구 문제
 
-### 8.1 백업 실패
+### 9.1 백업 실패
 
 #### 공통 원인
 ```bash
