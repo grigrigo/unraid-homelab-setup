@@ -11,7 +11,7 @@
 **대상 하드웨어**:
 - CPU: Intel Core i3-14100T (4코어/8스레드, TDP 35W)
 - RAM: 64GB DDR5-5600
-- 스토리지: 3TB HDD x 3개 + 500GB SSD + 1TB NVMe
+- 스토리지: 3TB HDD x 3개 + 128GB SSD + 1TB NVMe
 - GPU: Intel UHD Graphics 730 (트랜스코딩용 Quick Sync 지원)
 
 ## 아키텍처
@@ -349,7 +349,7 @@ docker logs [container_name] --tail 100
 **용량 계획**:
 - 싱글 패리티: 6TB 가용 공간 (1개 디스크 보호)
 - 패리티 없음: 9TB 가용 공간 (보호 없음)
-- 캐시: 총 1.5TB (500GB SSD + 1TB NVMe)
+- 캐시: 총 1.128TB (128GB SSD + 1TB NVMe)
 
 **성능 목표**:
 - 동시 1080p 트랜스코딩 4-6개

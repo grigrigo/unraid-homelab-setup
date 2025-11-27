@@ -9,7 +9,7 @@
 - **메인보드**: ASRock B760M Pro-A (LGA1700, M.2 슬롯 2개)
 - **스토리지**:
   - TOSHIBA DT01ACA300 3TB × 3개 (Array)
-  - SanDisk 500GB SATA SSD (앱/캐시)
+  - Samsung 830 Series 128GB SATA SSD (캐시)
   - XPG GAMMIX S11 Pro 1TB NVMe (고속 캐시)
 - **GPU**: Intel UHD Graphics 730 (Quick Sync 지원)
 - **전력 소비**: 35-65W (실측 기준)
@@ -97,7 +97,7 @@ docs/
 
 ## 달성 가능한 성능
 - ✅ 9TB (싱글) 또는 6TB (듀얼) 보호된 스토리지
-- ✅ 1.5TB 고속 캐시 (SSD + NVMe)
+- ✅ 1.128TB 고속 캐시 (SSD + NVMe)
 - ✅ 5-8개 동시 미디어 트랜스코딩
 - ✅ 50+ Docker 컨테이너 운영 가능
 - ✅ 다중 VM 호스팅 (64GB RAM)

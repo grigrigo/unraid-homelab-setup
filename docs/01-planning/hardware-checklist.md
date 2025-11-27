@@ -5,7 +5,7 @@
 - [x] 메인보드 모델 확인: ASRock B760M Pro-A 7.03 (LGA1700)
 - [x] RAM 용량 확인: 64GB (Team Group DDR5-5600 32GB × 2)
 - [x] HDD 확인: TOSHIBA DT01ACA300 3TB × 3개
-- [x] SSD 확인: SanDisk 500GB SATA
+- [x] SSD 확인: Samsung 830 Series 128GB SATA
 - [x] NVMe 확인: XPG GAMMIX S11 Pro 1TB (M.2 2280)
 - [x] GPU (내장): Intel UHD Graphics 730 (Quick Sync 지원)
 - [x] GPU (외장): NVIDIA GeForce GTX 1050 2GB (NVENC 지원)

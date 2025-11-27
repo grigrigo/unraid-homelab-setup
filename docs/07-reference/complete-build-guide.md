@@ -2,7 +2,7 @@
 
 > **2025년 1월 업데이트:**
 > - 실제 구축 하드웨어: Intel Core i3-14100T, ASRock B760M Pro-A, Team Group DDR5-5600 64GB
-> - 스토리지: TOSHIBA DT01ACA300 3TB × 3개, SanDisk SSD 500GB, XPG GAMMIX S11 Pro NVMe 1TB
+> - 스토리지: TOSHIBA DT01ACA300 3TB × 3개, Samsung 830 Series 128GB SSD, XPG GAMMIX S11 Pro NVMe 1TB
 > - 3TB HDD 3개로 패리티 보호 6TB 또는 비보호 9TB 구성 가능
 > - **모든 라이선스 티어에서 듀얼 패리티 지원** (추후 HDD 추가 시 활용 가능)
 
@@ -48,7 +48,7 @@ Unraid 설치는 놀랍도록 간단합니다. **전체 운영체제가 USB 플�
 - ASRock B760M Pro-A 메인보드 (LGA1700, DDR5 지원)
 - Team Group DDR5-5600 64GB (32GB × 2)
 - TOSHIBA DT01ACA300 **3TB HDD × 3개**
-- SanDisk 500GB SATA SSD (캐시/앱용)
+- Samsung 830 Series 128GB SATA SSD (캐시)
 - XPG GAMMIX S11 Pro 1TB NVMe (고속 캐시)
 - Intel UHD Graphics 730 (Quick Sync 지원)
 
@@ -124,7 +124,7 @@ USB 플래시 드라이브는 **4GB에서 32GB 사이의 고품질 제품**을 �
 - 평생 업데이트
 
 **우리 구성의 경우:** 
-- 3TB HDD 4개 + 500GB SSD + 1TB NVMe = 6개 디바이스
+- 3TB HDD 3개 + 128GB SSD + 1TB NVMe = 5개 디바이스
 - **Starter 라이선스**로 충분 (싱글/듀얼 패리티 모두 지원)
 - 장기 사용 시 Lifetime 고려 (연장 비용 없음)
 
@@ -215,13 +215,13 @@ Parity Disk:  HDD 3TB #1
 Data Disk 1:  HDD 3TB #2
 Data Disk 2:  HDD 3TB #3
 Data Disk 3:  HDD 3TB #4
-Cache Drive:  SSD 500GB
+Cache Drive:  SSD 128GB
 ```
 
 **저장 용량:**
 - 사용 가능 공간: **9TB** (3TB × 3)
 - 패리티 보호: 1개 드라이브 실패까지 복구 가능
-- 캐시: 500GB (빠른 쓰기 작업용)
+- 캐시: 128GB (빠른 쓰기 작업용)
 - **장점:** 최대 저장 공간, 일반적인 홈 사용에 충분한 보호
 - **단점:** 동시에 2개 드라이브 실패 시 데이터 손실
 
@@ -233,13 +233,13 @@ Parity 1:     HDD 3TB #1
 Parity 2:     HDD 3TB #2
 Data Disk 1:  HDD 3TB #3
 Data Disk 2:  HDD 3TB #4
-Cache Drive:  SSD 500GB
+Cache Drive:  SSD 128GB
 ```
 
 **저장 용량:**
 - 사용 가능 공간: **6TB** (3TB × 2)
 - 패리티 보호: **2개 드라이브 동시 실패까지 복구 가능**
-- 캐시: 500GB (빠른 쓰기 작업용)
+- 캐시: 128GB (빠른 쓰기 작업용)
 - **장점:** 매우 높은 데이터 안정성, 중요 데이터에 적합
 - **단점:** 저장 공간 50% 사용 (RAID 10과 동일)
 
@@ -263,7 +263,7 @@ Array (느린 스토리지):
 - Data 3:   HDD 3TB #4
 
 Cache Pool (중간 속도):
-- Cache:    SSD 500GB SATA
+- Cache:    SSD 128GB SATA
 
 NVMe Pool (고속 스토리지):
 - NVMe:     1TB M.2 NVMe
@@ -277,7 +277,7 @@ Array (느린 스토리지):
 - Data 1:   HDD 3TB #3
 - Data 2:   HDD 3TB #4
 
-Cache Pool: SSD 500GB SATA
+Cache Pool: SSD 128GB SATA
 NVMe Pool:  1TB M.2 NVMe
 ```
 
@@ -359,7 +359,7 @@ Parity:       3TB HDD #1 (가장 큰 드라이브)
 Disk 1:       3TB HDD #2
 Disk 2:       3TB HDD #3
 Disk 3:       3TB HDD #4
-Cache:        500GB SSD
+Cache:        128GB SSD
 ```
 
 #### 1단계: 디스크 할당 (듀얼 패리티 선택 시)
@@ -370,7 +370,7 @@ Parity:       3TB HDD #1
 Parity 2:     3TB HDD #2  (모든 라이선스에서 지원)
 Disk 1:       3TB HDD #3
 Disk 2:       3TB HDD #4
-Cache:        500GB SSD
+Cache:        128GB SSD
 ```
 
 **중요 원칙:**
@@ -1529,7 +1529,7 @@ Community Applications에 다양한 게임 서버 템플릿 있음.
 | 메인보드 | ASRock N100M | 100,000 |
 | RAM | 32GB x 2 (64GB) | 150,000 |
 | **HDD** | **3TB x 4 (WD Red)** | **600,000** |
-| SSD | 500GB SATA | 60,000 |
+| SSD | 128GB SATA | 30,000 |
 | NVMe | 1TB M.2 | 80,000 |
 | GPU | GTX 1050 2GB (중고) | 80,000 |
 | 케이스 | Fractal Node 804 | 150,000 |
@@ -1625,14 +1625,14 @@ Community Applications에 다양한 게임 서버 템플릿 있음.
 
 **스토리지 (싱글 패리티):**
 - ✅ 9TB 보호된 스토리지 (패리티 1개)
-- ✅ 500GB 빠른 캐시 (SATA SSD)
+- ✅ 128GB 빠른 캐시 (SATA SSD)
 - ✅ 1TB 초고속 작업 공간 (NVMe)
 - ✅ 총 10.5TB 활용 가능
 - ✅ 1개 디스크 실패 복구 가능
 
 **스토리지 (듀얼 패리티):**
 - ✅ 6TB 강력하게 보호된 스토리지 (패리티 2개)
-- ✅ 500GB 빠른 캐시 (SATA SSD)
+- ✅ 128GB 빠른 캐시 (SATA SSD)
 - ✅ 1TB 초고속 작업 공간 (NVMe)
 - ✅ 총 7.5TB 활용 가능
 - ✅ 2개 디스크 동시 실패 복구 가능

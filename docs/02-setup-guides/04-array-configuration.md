@@ -8,7 +8,7 @@ Unraid 디스크 어레이 최적 구성 방법
 
 ### 보유 디스크
 - **HDD**: TOSHIBA DT01ACA300 3TB × 3개
-- **SSD**: SanDisk 500GB SATA
+- **SSD**: Samsung 830 Series 128GB SATA
 - **NVMe**: XPG GAMMIX S11 Pro 1TB
 
 ## 🎯 구성 전략별 비교
@@ -32,7 +32,7 @@ Unraid 디스크 어레이 최적 구성 방법
 
 캐시 구성:
   - Cache: XPG NVMe 1TB (고속 캐시)
-  - Unassigned: SanDisk SSD 500GB (앱 전용)
+  - Unassigned: Samsung 830 SSD 128GB (앱 전용)
 ```
 
 ### 장점
@@ -69,13 +69,13 @@ Unraid 디스크 어레이 최적 구성 방법
   - Disk 3: TOSHIBA 3TB (디스크 #3)
 
 캐시 구성:
-  - Cache Pool: SSD 500GB + NVMe 1TB
+  - Cache Pool: SSD 128GB + NVMe 1TB
 ```
 
 ### 장점
 - ✅ 최대 용량 활용 (9TB)
 - ✅ 빠른 쓰기 속도
-- ✅ 대용량 캐시 풀 (1.5TB)
+- ✅ 대용량 캐시 풀 (1.128TB)
 
 ### 단점
 - ❌ 디스크 실패 시 데이터 손실
@@ -141,15 +141,15 @@ Phase 2 (패리티 추가):
 ```yaml
 구성:
   - Cache Pool: BTRFS RAID1
-  - 멤버: SSD 500GB + NVMe 1TB
-  - 유효 용량: 500GB (미러링)
+  - 멤버: SSD 128GB + NVMe 1TB
+  - 유효 용량: 128GB (미러링)
 
 장점:
   - 캐시 데이터 보호
   - 하나 실패해도 작동
 
 단점:
-  - 용량 손실 (1.5TB → 500GB)
+  - 용량 손실 (1.128TB → 128GB)
   - 속도가 SSD로 제한
 ```
 
@@ -165,7 +165,7 @@ Phase 2 (패리티 추가):
     - 데이터베이스
     - 다운로드
 
-  SSD (500GB):
+  SSD (128GB):
     - Docker appdata
     - 로그 파일
     - 백업 스테이징
